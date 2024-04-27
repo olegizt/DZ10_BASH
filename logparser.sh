@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Зададим переменные
 logfile="/weblogs/access-web.log"
 logtimes="/logparser/parstimes.log"
 
@@ -27,26 +28,26 @@ awk -v tmpvar=$lastparstimesec '$4 > tmpvar {print}')
 #Формирование тела письма с указанием необходимых данных. Если с момента последнего парсинга новых данных нет, текст письма об этом укажет
 if [ $(echo "$parstimelog" | wc -l) -gt 0 ] && [ -n "$(echo "$parstimelog" | grep -v '^$')" ]; then
     mailbody=$(
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
 	echo "Лог сформирован за период с" $lastparstime "до" $curparstime
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
     echo "Список IP адресов (с наибольшим кол-вом запросов) - топ 10"
     echo "$parstimelog" | cut -f 1 -d ' ' | sort | uniq -c | sort -n -r | sed -n "1,10 p" 
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
     echo "Список запрашиваемых URL (с наибольшим кол-вом запросов) - топ 10"
     echo "$parstimelog" | cut -f 11 -d ' ' | sort | uniq -c | sort -n -r | sed -n "1,10 p" 
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
     echo "Список всех кодов HTTP ответа"
     echo "$parstimelog" | cut -f 9 -d ' ' | sort | uniq -c | sort -n -r
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
     echo "Ошибки веб-сервера/приложения"
     echo "$parstimelog" | awk '$9 ~ /^5/ {print $0}' 
-	printf '.%.0s' {1..70}; echo)
+	printf '.%.0s' {1..80}; echo)
 else
     mailbody=$(
-    printf '.%.0s' {1..70}; echo
+    printf '.%.0s' {1..80}; echo
     echo "За период с" $lastparstime "до" $curparstime "новых данных не поступало"
-    printf '.%.0s' {1..70}; echo)
+    printf '.%.0s' {1..80}; echo)
 fi
 
 #Отправка письма, локально, т.к. для отправки на реальную почту необходимо или указывать личные данные для аутентификации на публичном почтовике, или делать свой почтовый сервер с занесением данных в публичный DNS
