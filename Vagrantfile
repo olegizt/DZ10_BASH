@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
         vb.cpus = boxconfig[:cpus]
       end
       box.vm.provision "shell", inline: <<-SHELL
-	      yum install -y wget mailx #flock
+        yum install -y wget mailx
         mkdir /logparser/
         mkdir /weblogs/
         wget -P /logparser/ https://raw.githubusercontent.com/olegizt/DZ10_BASH/main/logparser.sh
